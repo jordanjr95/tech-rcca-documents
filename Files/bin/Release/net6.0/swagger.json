@@ -1,0 +1,110 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Files, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/Documents/uploadfile": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "templateID",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "formData",
+            "name": "file",
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Documents/{id}": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Documents"
+            }
+          }
+        }
+      }
+    },
+    "/api/Documents/ListOfDocumentsWaiting": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Documents"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Documents": {
+      "type": "object",
+      "properties": {
+        "documentID": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "templateID": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "documentReference": {
+          "type": "string"
+        },
+        "waitingAdminApproval": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

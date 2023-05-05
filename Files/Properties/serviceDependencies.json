@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets"
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings"
+    },
+    "storage1": {
+      "type": "storage",
+      "connectionId": "documentsconnection"
+    },
+    "apis1": {
+      "type": "apis"
+    }
+  }
+}
