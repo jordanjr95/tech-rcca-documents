@@ -1,6 +1,7 @@
 using Files.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
+using Files.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -26,6 +27,12 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<DocumentsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.Configure<DocumentsDatabaseSettings>(
+    builder.Configuration.GetSection("RoverClubDatabase"));
+
+builder.Services.AddSingleton<DocumentsService>();
 
 var app = builder.Build();
 

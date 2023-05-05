@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Files.Models;
 using Azure.Storage.Blobs;
 using System.IO;
+using Files.Services;
 
 namespace Files.Controllers
 {
@@ -14,85 +15,88 @@ namespace Files.Controllers
 
         //private readonly IConfiguration _configuration;
         private readonly DocumentsContext _context;
+        private readonly DocumentsService _documentsService;
 
-        public  DocumentsController(DocumentsContext context)
-        {
-            _context = context;
-        }
+        public DocumentsController(DocumentsService documentsService) =>
+        _documentsService = documentsService;
 
-        [HttpPost("uploadfile")]
-        public async Task<IActionResult> UploadFile(IFormFile file, int templateID)
-        {
-            try
-            {
-                //string connectionString = _configuration.GetConnectionString("DefaultConnection"); //documentsconnection
+        [HttpGet]
+        public async Task<List<Documents>> Get() =>
+            await _documentsService.GetAsync();
 
-                // Upload file to Azure Blob Storage
-                BlobServiceClient blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=projectcars;AccountKey=X8rno/SKhFS96VGDj1bQn9zls4QzY7FUNGZ3inErG+aQTvAY/3RgMlFDBxaK0oIfuh8qhvw3DYnh+AStAmXouQ==;BlobEndpoint=https://projectcars.blob.core.windows.net/;TableEndpoint=https://projectcars.table.core.windows.net/;QueueEndpoint=https://projectcars.queue.core.windows.net/;FileEndpoint=https://projectcars.file.core.windows.net/");
-                BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("documents");
+        //[HttpPost("uploadfile")]
+        //public async Task<IActionResult> UploadFile(IFormFile file, int templateID)
+        //{
+        //    try
+        //    {
+        //        //string connectionString = _configuration.GetConnectionString("DefaultConnection"); //documentsconnection
 
-                string fileName = Path.GetFileNameWithoutExtension(file.FileName);
-                string fileExtension = Path.GetExtension(file.FileName);
-                string blobName = $"{fileName}-{DateTime.UtcNow.ToString("yyyyMMddHHmmss")}{fileExtension}";
+        //        // Upload file to Azure Blob Storage
+        //        BlobServiceClient blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=projectcars;AccountKey=X8rno/SKhFS96VGDj1bQn9zls4QzY7FUNGZ3inErG+aQTvAY/3RgMlFDBxaK0oIfuh8qhvw3DYnh+AStAmXouQ==;BlobEndpoint=https://projectcars.blob.core.windows.net/;TableEndpoint=https://projectcars.table.core.windows.net/;QueueEndpoint=https://projectcars.queue.core.windows.net/;FileEndpoint=https://projectcars.file.core.windows.net/");
+        //        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("documents");
 
-                BlobClient blobClient = containerClient.GetBlobClient(blobName);
-                using (Stream stream = file.OpenReadStream())
-                {
-                    await blobClient.UploadAsync(stream);
-                }
+        //        string fileName = Path.GetFileNameWithoutExtension(file.FileName);
+        //        string fileExtension = Path.GetExtension(file.FileName);
+        //        string blobName = $"{fileName}-{DateTime.UtcNow.ToString("yyyyMMddHHmmss")}{fileExtension}";
 
-                // Insert link to uploaded file in SQL Server database
-                Documents documentModel = new Documents
-                {      
-                    templateID = templateID,
-                    documentReference = blobClient.Uri.AbsoluteUri,
-                    waitingAdminApproval = true
+        //        BlobClient blobClient = containerClient.GetBlobClient(blobName);
+        //        using (Stream stream = file.OpenReadStream())
+        //        {
+        //            await blobClient.UploadAsync(stream);
+        //        }
 
-                };
-                _context.Documents.Add(documentModel);
-                await _context.SaveChangesAsync();
+        //        // Insert link to uploaded file in SQL Server database
+        //        Documents documentModel = new Documents
+        //        {
+        //            templateID = templateID,
+        //            documentReference = blobClient.Uri.AbsoluteUri,
+        //            waitingAdminApproval = true
 
-                return Ok("File uploaded successfully!");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error uploading file: {ex.Message}");
-            }
-        }
+        //        };
+        //        _context.Documents.Add(documentModel);
+        //        await _context.SaveChangesAsync();
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Documents>> GetDocument(int id)
-        {
-            if (_context.Documents == null)
-            {
-                return NotFound();
-            }
-            var template = await _context.Documents.FindAsync(id);
+        //        return Ok("File uploaded successfully!");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, $"Error uploading file: {ex.Message}");
+        //    }
+        //}
 
-            if (template == null)
-            {
-                return NotFound();
-            }
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Documents>> GetDocument(int id)
+        //{
+        //    if (_context.Documents == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var template = await _context.Documents.FindAsync(id);
 
-            return template;
-        }
+        //    if (template == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-        [HttpGet("ListOfDocumentsWaiting")]
-        public async Task<ActionResult<List<Documents>>> ListOfDocumentsWaiting()
-        {
-            if (_context.Documents == null)
-            {
-                return NotFound();
-            }
-            var template = _context.Documents.Where(m => m.waitingAdminApproval).ToList();
+        //    return template;
+        //}
+
+        //[HttpGet("ListOfDocumentsWaiting")]
+        //public async Task<ActionResult<List<Documents>>> ListOfDocumentsWaiting()
+        //{
+        //    if (_context.Documents == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var template = _context.Documents.Where(m => m.waitingAdminApproval).ToList();
 
 
-            if (template == null)
-            {
-                return NotFound();
-            }
+        //    if (template == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return template;
-        }
+        //    return template;
+        //}
     }
 }
