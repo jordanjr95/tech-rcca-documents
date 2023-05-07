@@ -13,7 +13,6 @@ namespace Files.Controllers
     public class DocumentsController : ControllerBase
     {
 
-        //private readonly IConfiguration _configuration;
         private readonly DocumentsContext _context;
         private readonly DocumentsService _documentsService;
 
@@ -24,7 +23,73 @@ namespace Files.Controllers
         public async Task<List<Documents>> Get() =>
             await _documentsService.GetAsync();
 
-        //[HttpPost("uploadfile")]
+        [HttpGet("{id}")]   
+        public async Task<ActionResult<Documents>> Get(int id)
+        {
+            var document = await _documentsService.GetAsync(id);
+
+            if (document is null)
+            {
+                return NotFound();
+            }
+
+            return document;
+        }
+
+        [HttpGet("listOfDocumentsWaiting")]
+        public async Task<List<Documents>> ListOfDocumentsWaiting() =>
+            await _documentsService.GetWaitingApprovalAsync();
+
+        [HttpPost("approveDocument")]
+        public async Task<IActionResult> ApproveDocument(int id)
+        {
+            var document = await _documentsService.GetAsync(id);
+
+            if (document is null)
+            {
+                return NotFound();
+            }
+
+            document.waitingAdminApproval = false;
+
+            await _documentsService.ApproveAsync(id, document);
+
+            return NoContent();
+        }
+
+        [HttpPost("rejectDocument")]
+        public async Task<IActionResult> RejectDocument(int id)
+        {
+            var document = await _documentsService.GetAsync(id);
+
+            if (document is null)
+            {
+                return NotFound();
+            }
+
+            await _documentsService.RejectAsync(id);
+
+            return NoContent();
+        }
+
+        [HttpPost("updateDocument")]
+        public async Task<IActionResult> UpdateDocument(int id, Documents updatedDocument)
+        {
+            var document = await _documentsService.GetAsync(id);
+
+            if (document is null)
+            { 
+                return NotFound();
+            }
+
+            updatedDocument.documentID = document.documentID;
+
+            await _documentsService.UpdateAsync(id, updatedDocument);
+
+            return NoContent();
+        }
+
+        //[HttpPost("uploadDocument")]
         //public async Task<IActionResult> UploadFile(IFormFile file, int templateID)
         //{
         //    try
@@ -64,39 +129,5 @@ namespace Files.Controllers
         //    }
         //}
 
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Documents>> GetDocument(int id)
-        //{
-        //    if (_context.Documents == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var template = await _context.Documents.FindAsync(id);
-
-        //    if (template == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return template;
-        //}
-
-        //[HttpGet("ListOfDocumentsWaiting")]
-        //public async Task<ActionResult<List<Documents>>> ListOfDocumentsWaiting()
-        //{
-        //    if (_context.Documents == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var template = _context.Documents.Where(m => m.waitingAdminApproval).ToList();
-
-
-        //    if (template == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return template;
-        //}
     }
 }
