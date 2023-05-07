@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ericl\\source\\repos\\Files\\Files\\Files.csproj": {}
+    "C:\\Users\\Jordan\\Documents\\Projects\\tech-rcca-documents\\Files\\Files.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ericl\\source\\repos\\Files\\Files\\Files.csproj": {
+    "C:\\Users\\Jordan\\Documents\\Projects\\tech-rcca-documents\\Files\\Files.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ericl\\source\\repos\\Files\\Files\\Files.csproj",
+        "projectUniqueName": "C:\\Users\\Jordan\\Documents\\Projects\\tech-rcca-documents\\Files\\Files.csproj",
         "projectName": "Files",
-        "projectPath": "C:\\Users\\ericl\\source\\repos\\Files\\Files\\Files.csproj",
-        "packagesPath": "C:\\Users\\ericl\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ericl\\source\\repos\\Files\\Files\\obj\\",
+        "projectPath": "C:\\Users\\Jordan\\Documents\\Projects\\tech-rcca-documents\\Files\\Files.csproj",
+        "packagesPath": "C:\\Users\\Jordan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Jordan\\Documents\\Projects\\tech-rcca-documents\\Files\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\ericl\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Jordan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -80,6 +76,10 @@
               "target": "Package",
               "version": "[1.0.0, )"
             },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.19.1, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
@@ -108,7 +108,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }
