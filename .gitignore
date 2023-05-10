@@ -1,0 +1,5 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Files/bin/Release/net6.0/runtimes/linux/native/libmongocrypt.so
