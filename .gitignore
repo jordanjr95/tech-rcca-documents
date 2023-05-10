@@ -3,3 +3,32 @@
 ################################################################################
 
 /Files/bin/Release/net6.0/runtimes/linux/native/libmongocrypt.so
+/Files/bin/Release/net6.0/runtimes/osx/native/libmongocrypt.dylib
+/Files/bin/Release/net6.0/runtimes
+/Files/bin/Release/net6.0/AWSSDK.Core.dll
+/Files/bin/Release/net6.0/AWSSDK.SecurityToken.dll
+/Files/bin/Release/net6.0/DnsClient.dll
+/Files/bin/Release/net6.0/MongoDB.Bson.dll
+/Files/bin/Release/net6.0/MongoDB.Driver.Core.dll
+/Files/bin/Release/net6.0/MongoDB.Driver.dll
+/Files/bin/Release/net6.0/MongoDB.Libmongocrypt.dll
+/Files/bin/Release/net6.0/SharpCompress.dll
+/Files/bin/Release/net6.0/Snappier.dll
+/Files/bin/Release/net6.0/ZstdSharp.dll
+/Files/obj/Release/net6.0/PubTmp/Out/runtimes/linux/native/libmongocrypt.so
+/Files/obj/Release/net6.0/PubTmp/Out/runtimes/osx/native/libmongocrypt.dylib
+/Files/obj/Release/net6.0/PubTmp/Out/runtimes/win/native/mongocrypt.dll
+/Files/obj/Release/net6.0/PubTmp/Out/AWSSDK.Core.dll
+/Files/obj/Release/net6.0/PubTmp/Out/AWSSDK.SecurityToken.dll
+/Files/obj/Release/net6.0/PubTmp/Out/DnsClient.dll
+/Files/obj/Release/net6.0/PubTmp/Out/MongoDB.Bson.dll
+/Files/obj/Release/net6.0/PubTmp/Out/MongoDB.Driver.Core.dll
+/Files/obj/Release/net6.0/PubTmp/Out/MongoDB.Driver.dll
+/Files/obj/Release/net6.0/PubTmp/Out/MongoDB.Libmongocrypt.dll
+/Files/obj/Release/net6.0/PubTmp/Out/SharpCompress.dll
+/Files/obj/Release/net6.0/PubTmp/Out/Snappier.dll
+/Files/obj/Release/net6.0/PubTmp/Out/ZstdSharp.dll
+/Files/obj/Release/net6.0/PubTmp/Files-20230507182757944.zip
+/Files/obj/Release/net6.0/PublishOutputs.3d343b0538.txt
+/Files/Properties/PublishProfiles/GetDocument - Zip Deploy1.pubxml
+/Files/Properties/PublishProfiles/GetDocument - Zip Deploy1.pubxml.user
