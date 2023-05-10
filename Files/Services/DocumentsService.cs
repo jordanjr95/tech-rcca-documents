@@ -31,6 +31,9 @@ namespace Files.Services
         public async Task<List<Documents>> GetWaitingApprovalAsync() =>
             await _documentsCollection.Find(x => x.waitingAdminApproval == true).ToListAsync();
 
+        public async Task<List<Documents>> GetApprovedAsync() =>
+            await _documentsCollection.Find(x => x.waitingAdminApproval == false).ToListAsync();
+
         public async Task ApproveAsync(int id, Documents approvedDocument) =>
             await _documentsCollection.ReplaceOneAsync(x => x.documentID == id, approvedDocument);
 

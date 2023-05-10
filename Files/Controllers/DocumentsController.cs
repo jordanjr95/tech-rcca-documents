@@ -40,7 +40,11 @@ namespace Files.Controllers
         public async Task<List<Documents>> ListOfDocumentsWaiting() =>
             await _documentsService.GetWaitingApprovalAsync();
 
-        [HttpPost("approveDocument")]
+        [HttpGet("listOfDocumentsApproved")]
+        public async Task<List<Documents>> ListOfDocumentsApproved() =>
+            await _documentsService.GetApprovedAsync();
+
+        [HttpPost("approveDocument/{id}")]
         public async Task<IActionResult> ApproveDocument(int id)
         {
             var document = await _documentsService.GetAsync(id);
@@ -57,7 +61,7 @@ namespace Files.Controllers
             return NoContent();
         }
 
-        [HttpPost("rejectDocument")]
+        [HttpPost("rejectDocument/{id}")]
         public async Task<IActionResult> RejectDocument(int id)
         {
             var document = await _documentsService.GetAsync(id);
@@ -72,7 +76,7 @@ namespace Files.Controllers
             return NoContent();
         }
 
-        [HttpPost("updateDocument")]
+        [HttpPost("updateDocument/{id}")]
         public async Task<IActionResult> UpdateDocument(int id, Documents updatedDocument)
         {
             var document = await _documentsService.GetAsync(id);
