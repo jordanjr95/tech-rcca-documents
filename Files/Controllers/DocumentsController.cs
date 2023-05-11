@@ -93,45 +93,50 @@ namespace Files.Controllers
             return NoContent();
         }
 
-        //[HttpPost("uploadDocument")]
-        //public async Task<IActionResult> UploadFile(IFormFile file, int templateID)
-        //{
-        //    try
-        //    {
-        //        //string connectionString = _configuration.GetConnectionString("DefaultConnection"); //documentsconnection
+        [HttpPost("uploadDocument")]
+        [Consumes("multipart/form-data")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UploadFile([FromForm] FileElements fileElements)
+        {
+            try
+            {
+                // Upload file to Azure Blob Storage
+                BlobServiceClient blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=projectcars;AccountKey=X8rno/SKhFS96VGDj1bQn9zls4QzY7FUNGZ3inErG+aQTvAY/3RgMlFDBxaK0oIfuh8qhvw3DYnh+AStAmXouQ==;BlobEndpoint=https://projectcars.blob.core.windows.net/;TableEndpoint=https://projectcars.table.core.windows.net/;QueueEndpoint=https://projectcars.queue.core.windows.net/;FileEndpoint=https://projectcars.file.core.windows.net/");
+                BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("documents");
 
-        //        // Upload file to Azure Blob Storage
-        //        BlobServiceClient blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=projectcars;AccountKey=X8rno/SKhFS96VGDj1bQn9zls4QzY7FUNGZ3inErG+aQTvAY/3RgMlFDBxaK0oIfuh8qhvw3DYnh+AStAmXouQ==;BlobEndpoint=https://projectcars.blob.core.windows.net/;TableEndpoint=https://projectcars.table.core.windows.net/;QueueEndpoint=https://projectcars.queue.core.windows.net/;FileEndpoint=https://projectcars.file.core.windows.net/");
-        //        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("documents");
+                string fileName = Path.GetFileNameWithoutExtension(fileElements.File.FileName);
+                string fileExtension = Path.GetExtension(fileElements.File.FileName);
+                string blobName = $"{fileName}-{DateTime.UtcNow.ToString("yyyyMMddHHmmss")}{fileExtension}";
 
-        //        string fileName = Path.GetFileNameWithoutExtension(file.FileName);
-        //        string fileExtension = Path.GetExtension(file.FileName);
-        //        string blobName = $"{fileName}-{DateTime.UtcNow.ToString("yyyyMMddHHmmss")}{fileExtension}";
+                BlobClient blobClient = containerClient.GetBlobClient(blobName);
+                using (Stream stream = fileElements.File.OpenReadStream())
+                {
+                    await blobClient.UploadAsync(stream);
+                }
 
-        //        BlobClient blobClient = containerClient.GetBlobClient(blobName);
-        //        using (Stream stream = file.OpenReadStream())
-        //        {
-        //            await blobClient.UploadAsync(stream);
-        //        }
+                Random random = new Random();
+                int id = random.Next(1, 10010);
 
-        //        // Insert link to uploaded file in SQL Server database
-        //        Documents documentModel = new Documents
-        //        {
-        //            templateID = templateID,
-        //            documentReference = blobClient.Uri.AbsoluteUri,
-        //            waitingAdminApproval = true
+                // Insert link to uploaded file in SQL Server database
+                Documents documentModel = new Documents
+                {
+                    templateID = fileElements.templateID,
+                    documentID = id,
+                    documentReference = blobClient.Uri.AbsoluteUri,
+                    waitingAdminApproval = true,
+                    formElements = fileElements.elements
+                };
 
-        //        };
-        //        _context.Documents.Add(documentModel);
-        //        await _context.SaveChangesAsync();
+                await _documentsService.CreateAsync(documentModel);
 
-        //        return Ok("File uploaded successfully!");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError, $"Error uploading file: {ex.Message}");
-        //    }
-        //}
+                return Ok("File uploaded successfully!");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error uploading file: {ex.Message}");
+            }
+        }
 
     }
 }

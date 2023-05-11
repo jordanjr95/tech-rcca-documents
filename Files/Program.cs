@@ -2,6 +2,9 @@ using Files.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using Files.Services;
+using Files.Filters;
+using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
