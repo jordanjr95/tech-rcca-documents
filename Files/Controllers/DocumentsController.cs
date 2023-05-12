@@ -24,7 +24,7 @@ namespace Files.Controllers
             await _documentsService.GetAsync();
 
         [HttpGet("{id}")]   
-        public async Task<ActionResult<Documents>> Get(int id)
+        public async Task<ActionResult<Documents>> Get(string id)
         {
             var document = await _documentsService.GetAsync(id);
 
@@ -45,7 +45,7 @@ namespace Files.Controllers
             await _documentsService.GetApprovedAsync();
 
         [HttpPost("approveDocument/{id}")]
-        public async Task<IActionResult> ApproveDocument(int id)
+        public async Task<IActionResult> ApproveDocument(string id)
         {
             var document = await _documentsService.GetAsync(id);
 
@@ -62,7 +62,7 @@ namespace Files.Controllers
         }
 
         [HttpPost("rejectDocument/{id}")]
-        public async Task<IActionResult> RejectDocument(int id)
+        public async Task<IActionResult> RejectDocument(string id)
         {
             var document = await _documentsService.GetAsync(id);
 
@@ -77,7 +77,7 @@ namespace Files.Controllers
         }
 
         [HttpPost("updateDocument/{id}")]
-        public async Task<IActionResult> UpdateDocument(int id, Documents updatedDocument)
+        public async Task<IActionResult> UpdateDocument(string id, Documents updatedDocument)
         {
             var document = await _documentsService.GetAsync(id);
 
@@ -115,14 +115,10 @@ namespace Files.Controllers
                     await blobClient.UploadAsync(stream);
                 }
 
-                Random random = new Random();
-                int id = random.Next(1, 10010);
-
                 // Insert link to uploaded file in SQL Server database
                 Documents documentModel = new Documents
                 {
                     templateID = fileElements.templateID,
-                    documentID = id,
                     documentReference = blobClient.Uri.AbsoluteUri,
                     waitingAdminApproval = true,
                     formElements = fileElements.elements

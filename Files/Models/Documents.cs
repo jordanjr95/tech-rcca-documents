@@ -9,13 +9,11 @@ namespace Files.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
-
-        [BsonElement("documentID")]
-        public int documentID { get; set; }
+        [BsonElement("Id")]
+        public string documentID { get; set; }
 
         [BsonElement("templateID")]
-        public int templateID { get; set; }
+        public string templateID { get; set; }
 
         [BsonElement("documentReference")]
         public string documentReference { get; set; }
